@@ -1,25 +1,31 @@
 package com.codecool.shop.dao.implementation;
 
 
+import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component // mówi, że spring może używać tej klasy tam gdzie jest ona potrzebna
-public class ProductDaoMem implements ProductDao {
+public class ProductDaoJdbc implements ProductDao {
 
     private final DataSource dataSource;
+    private final ProductCategoryDao productCategoryDao;
+    private final SupplierDao supplierDao;
 
-    public ProductDaoMem(DataSource dataSource) {
+    public ProductDaoJdbc(DataSource dataSource, ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
         this.dataSource = dataSource;
+        this.productCategoryDao = productCategoryDao;
+        this.supplierDao = supplierDao;
     }
 
     @Override
@@ -46,7 +52,31 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public Product find(int id) {
-        return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT name, price, currency, description, categoryId, supplierId, image " +
+                    "from product WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+
+            ProductCategory productCategory = productCategoryDao.find(rs.getInt(5));
+            Supplier supplier = supplierDao.find(rs.getInt(6));
+
+            Product product = new Product(rs.getString(1),
+                    new BigDecimal(rs.getString(2)),
+                    rs.getString(3),
+                    rs.getString(4),
+                    productCategory,
+                    supplier,
+                    rs.getString(7));
+            product.setId(id);
+            return product;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading product id:" + id, e);
+        }
     }
 
     @Override
