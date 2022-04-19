@@ -8,6 +8,7 @@ import com.codecool.shop.model.Supplier;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,6 @@ import java.util.stream.Collectors;
 public class ProductDaoMem implements ProductDao {
 
     private final DataSource dataSource;
-    private List<Product> data = new ArrayList<>();
 
     public ProductDaoMem(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -24,8 +24,24 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public void add(Product product) {
-        product.setId(data.size() + 1);
-        data.add(product);
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "INSERT INTO product (name, description, price, currency, supplierId, categoryId, image)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, product.getName());
+            statement.setString(2, product.getDescription());
+            statement.setFloat(3, Float.parseFloat(product.getPrice()));
+            statement.setString(4, product.getDefaultCurrency().getDisplayName());
+            statement.setInt(5, product.getSupplier().getId());
+            statement.setInt(6, product.getProductCategory().getId());
+            statement.setString(7, product.getImage());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            product.setId(resultSet.getInt(1));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
