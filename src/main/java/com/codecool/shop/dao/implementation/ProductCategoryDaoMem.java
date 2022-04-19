@@ -2,26 +2,22 @@ package com.codecool.shop.dao.implementation;
 
 
 import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
+import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     private List<ProductCategory> data = new ArrayList<>();
-    private static ProductCategoryDaoMem instance = null;
+    private final DataSource dataSource;
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
-    private ProductCategoryDaoMem() {
-    }
-
-    public static ProductCategoryDaoMem getInstance() {
-        if (instance == null) {
-            instance = new ProductCategoryDaoMem();
-        }
-        return instance;
+    public ProductCategoryDaoMem(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

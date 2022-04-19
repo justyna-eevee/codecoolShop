@@ -4,9 +4,12 @@ import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// w tym pliku znajdują się walidacje, łączenie z dao
+@Service // mówi, że spring może wziąć klasę i używać jej w kontrolerach, innych serwisach
 public class ProductService{
     private ProductDao productDao;
     private ProductCategoryDao productCategoryDao;

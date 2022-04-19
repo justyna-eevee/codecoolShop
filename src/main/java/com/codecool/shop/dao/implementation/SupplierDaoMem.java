@@ -2,25 +2,20 @@ package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Supplier;
+import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class SupplierDaoMem implements SupplierDao {
 
     private List<Supplier> data = new ArrayList<>();
-    private static SupplierDaoMem instance = null;
+    private final DataSource dataSource;
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
-    private SupplierDaoMem() {
-    }
-
-    public static SupplierDaoMem getInstance() {
-        if (instance == null) {
-            instance = new SupplierDaoMem();
-        }
-        return instance;
+    public SupplierDaoMem(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

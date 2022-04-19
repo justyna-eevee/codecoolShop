@@ -5,26 +5,21 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component // mówi, że spring może używać tej klasy tam gdzie jest ona potrzebna
 public class ProductDaoMem implements ProductDao {
 
+    private final DataSource dataSource;
     private List<Product> data = new ArrayList<>();
-    private static ProductDaoMem instance = null;
 
-    /* A private Constructor prevents any other class from instantiating.
-     */
-    private ProductDaoMem() {
-    }
-
-    public static ProductDaoMem getInstance() {
-        if (instance == null) {
-            instance = new ProductDaoMem();
-        }
-        return instance;
+    public ProductDaoMem(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
