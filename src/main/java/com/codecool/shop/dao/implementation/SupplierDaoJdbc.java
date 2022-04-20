@@ -91,7 +91,7 @@ public class SupplierDaoJdbc implements SupplierDao {
             }
             return supplierModels;
         } catch (SQLException e) {
-            throw new RuntimeException("Error while reading files", e);
+            throw new RuntimeException("Error while reading suppliers", e);
         }
     }
 }

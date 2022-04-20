@@ -39,7 +39,7 @@ public class ShopUserDaoJdbc implements ShopUserDao {
     @Override
     public ShopUserModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id" +
+            String sql = "SELECT name" +
                          "FROM shopuser" +
                          "WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -65,7 +65,7 @@ public class ShopUserDaoJdbc implements ShopUserDao {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("you cannot remove product with id: " + id, e);
+            throw new RuntimeException("you cannot remove user with id: " + id, e);
         }
     }
 
@@ -90,7 +90,7 @@ public class ShopUserDaoJdbc implements ShopUserDao {
             }
             return shopUsers;
         } catch (SQLException e) {
-            throw new RuntimeException("Error while reading files", e);
+            throw new RuntimeException("Error while reading users", e);
         }
     }
 }
