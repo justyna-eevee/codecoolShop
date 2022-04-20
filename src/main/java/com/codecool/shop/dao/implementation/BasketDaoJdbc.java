@@ -3,7 +3,6 @@ import com.codecool.shop.dao.BasketDao;
 import com.codecool.shop.model.*;
 import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +130,15 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public void removeProductFromBasket(int productId, int basketId) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM productForBasket WHERE productId = ? and basketId = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, productId);
+            statement.setInt(2, basketId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("You cannot delete basket with productId: " + productId + " and basketId: " + basketId, e);
+        }
     }
 
     @Override
