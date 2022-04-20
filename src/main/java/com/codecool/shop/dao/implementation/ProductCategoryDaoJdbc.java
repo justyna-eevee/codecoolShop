@@ -38,4 +38,11 @@ public class ProductCategoryDaoJdbc implements ProductCategoryDao {
     public List<ProductCategoryModel> getAll() {
         return null;
     }
+
+    @Override
+    public List<ProductCategoryModel> getAllForOneCategory() {
+        return null;
+    }
+
+
 }
