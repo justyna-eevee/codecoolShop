@@ -31,7 +31,7 @@ public class BasketDaoJdbc implements BasketDao {
             resultSet.next();
             basketModel.setId(resultSet.getInt(1));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while add basket", e);
         }
     }
 
@@ -55,7 +55,14 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public void remove(int id) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM basket WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("You cannot delete basket with id: " + id, e);
+        }
     }
 
     @Override
