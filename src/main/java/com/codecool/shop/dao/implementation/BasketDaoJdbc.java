@@ -137,18 +137,34 @@ public class BasketDaoJdbc implements BasketDao {
             statement.setInt(2, basketId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("You cannot delete basket with productId: " + productId + " and basketId: " + basketId, e);
+            throw new RuntimeException("You cannot delete product with productId: " + productId + " in basket with basketId: " + basketId, e);
         }
     }
 
     @Override
     public void increaseAmount(int productId, int basketId) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE productForBasket SET quantity = quantity + 1 WHERE productId = ? and basketId = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, productId);
+            statement.setInt(2, basketId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("You cannot increase product with productId: " + productId + " in basket with basketId: " + basketId, e);
+        }
     }
 
     @Override
     public void decreaseAmount(int productId, int basketId) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE productForBasket SET quantity = quantity - 1 WHERE productId = ? and basketId = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, productId);
+            statement.setInt(2, basketId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("You cannot increase product with productId: " + productId + " in basket with basketId: " + basketId, e);
+        }
     }
 
     @Override
