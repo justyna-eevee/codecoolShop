@@ -118,7 +118,15 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public void addProductToBasket(int productId, int basketId) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "INSERT INTO productForBasket (productId, basketId) VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, productId);
+            statement.setInt(2, basketId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while add product to the basket", e);
+        }
     }
 
     @Override
