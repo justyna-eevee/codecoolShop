@@ -9,6 +9,8 @@ public class BaseModel {
     protected String name;
     protected String description;
 
+    public BaseModel(){}
+
     public BaseModel(String name) {
         this.name = name;
     }
@@ -17,7 +19,6 @@ public class BaseModel {
         this.name = name;
         this.description = description;
     }
-
 
     public int getId() {
         return id;
