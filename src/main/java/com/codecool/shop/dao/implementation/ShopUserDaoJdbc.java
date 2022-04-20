@@ -13,11 +13,9 @@ import java.util.List;
 public class ShopUserDaoJdbc implements ShopUserDao {
 
     private final DataSource dataSource;
-    private final  ShopUserDao shopUserDao;
 
-    public ShopUserDaoJdbc(DataSource dataSource, ShopUserDao shopUserDao) {
+    public ShopUserDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
-        this.shopUserDao = shopUserDao;
     }
 
     @Override
