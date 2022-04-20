@@ -169,6 +169,15 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public void setAmount(int productId, int basketId, int amount) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE productForBasket SET quantity = ? WHERE productId = ? and basketId = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, amount);
+            statement.setInt(2, productId);
+            statement.setInt(3, basketId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("You cannot change quantity of product with productId: " + productId + " in basket with basketId: " + basketId, e);
+        }
     }
 }
