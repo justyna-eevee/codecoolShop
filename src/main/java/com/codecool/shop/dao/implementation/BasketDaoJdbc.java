@@ -36,7 +36,7 @@ public class BasketDaoJdbc implements BasketDao {
     public BasketModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "select basket.id, basket.userId, basket.payment, productForBasket.productid, productforbasket.quantity from basket" +
-                    "JOIN productForBasket on basket.id = productForBasket.basketId where basket.id = ?";
+                    " JOIN productForBasket on basket.id = productForBasket.basketId where basket.id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
