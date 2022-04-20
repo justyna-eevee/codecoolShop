@@ -163,7 +163,7 @@ public class BasketDaoJdbc implements BasketDao {
             statement.setInt(2, basketId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("You cannot increase product with productId: " + productId + " in basket with basketId: " + basketId, e);
+            throw new RuntimeException("You cannot decrease product with productId: " + productId + " in basket with basketId: " + basketId, e);
         }
     }
 
