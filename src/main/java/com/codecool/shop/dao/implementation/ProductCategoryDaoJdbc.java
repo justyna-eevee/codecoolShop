@@ -1,12 +1,8 @@
 package com.codecool.shop.dao.implementation;
-
-
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.ProductCategoryModel;
 import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
