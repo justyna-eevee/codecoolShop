@@ -2,9 +2,9 @@ package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.ProductModel;
+import com.codecool.shop.model.ProductCategoryModel;
+import com.codecool.shop.model.SupplierModel;
 import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public void add(Product product) {
+    public void add(ProductModel product) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "INSERT INTO product (name, description, price, currency, supplierId, categoryId, image)" +
                     " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -48,7 +48,7 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public Product find(int id) {
+    public ProductModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT name, price, currency, description, categoryId, supplierId, image " +
                     "from product WHERE id = ?";
@@ -58,10 +58,10 @@ public class ProductDaoJdbc implements ProductDao {
             if (!rs.next()) {
                 return null;
             }
-            ProductCategory productCategory = productCategoryDao.find(rs.getInt(5));
-            Supplier supplier = supplierDao.find(rs.getInt(6));
+            ProductCategoryModel productCategory = productCategoryDao.find(rs.getInt(5));
+            SupplierModel supplier = supplierDao.find(rs.getInt(6));
 
-            Product product = new Product(rs.getString(1),
+            ProductModel product = new ProductModel(rs.getString(1),
                     new BigDecimal(rs.getString(2)),
                     rs.getString(3),
                     rs.getString(4),
@@ -87,8 +87,8 @@ public class ProductDaoJdbc implements ProductDao {
         }
     }
 
-    private Product createProduct(ProductCategory productCategory, Supplier supplier, ResultSet rs) throws SQLException {
-        Product product = new Product(rs.getString(2),
+    private ProductModel createProduct(ProductCategoryModel productCategory, SupplierModel supplier, ResultSet rs) throws SQLException {
+        ProductModel product = new ProductModel(rs.getString(2),
                 new BigDecimal(rs.getString(3)),
                 rs.getString(4),
                 rs.getString(5),
@@ -100,16 +100,16 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<ProductModel> getAll() {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT id, name, price, currency, description, categoryId, supplierId, image from product";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
 
-            List<Product> products = new ArrayList<>();
+            List<ProductModel> products = new ArrayList<>();
             while (rs.next()) {
-                ProductCategory productCategory = productCategoryDao.find(rs.getInt(6));
-                Supplier supplier = supplierDao.find(rs.getInt(7));
+                ProductCategoryModel productCategory = productCategoryDao.find(rs.getInt(6));
+                SupplierModel supplier = supplierDao.find(rs.getInt(7));
                 products.add(createProduct(productCategory, supplier, rs));
             }
             return products;
@@ -119,16 +119,16 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) {
+    public List<ProductModel> getBy(SupplierModel supplier) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT id, name, price, currency, description, categoryId, supplierId, image " +
                     "from product WHERE supplierId = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, supplier.getId());
             ResultSet rs = statement.executeQuery();
-            List<Product> products = new ArrayList<>();
+            List<ProductModel> products = new ArrayList<>();
             while (rs.next()) {
-                ProductCategory productCategory = productCategoryDao.find(rs.getInt(6));
+                ProductCategoryModel productCategory = productCategoryDao.find(rs.getInt(6));
                 products.add(createProduct(productCategory, supplier, rs));
             }
             return products;
@@ -138,16 +138,16 @@ public class ProductDaoJdbc implements ProductDao {
     }
 
     @Override
-    public List<Product> getBy(ProductCategory productCategory) {
+    public List<ProductModel> getBy(ProductCategoryModel productCategory) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT id, name, price, currency, description, categoryId, supplierId, image " +
                     "from product WHERE categoryId = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, productCategory.getId());
             ResultSet rs = statement.executeQuery();
-            List<Product> products = new ArrayList<>();
+            List<ProductModel> products = new ArrayList<>();
             while (rs.next()) {
-                Supplier supplier = supplierDao.find(rs.getInt(7));
+                SupplierModel supplier = supplierDao.find(rs.getInt(7));
                 products.add(createProduct(productCategory, supplier, rs));
             }
             return products;
