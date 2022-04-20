@@ -1,8 +1,12 @@
 package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.BasketDao;
 import com.codecool.shop.model.BasketModel;
+import com.codecool.shop.model.ProductCategoryModel;
+import com.codecool.shop.model.ProductModel;
+import com.codecool.shop.model.SupplierModel;
 import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
 
@@ -33,7 +37,20 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public BasketModel find(int id) {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, userId, payment from basket WHERE id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
+            basketModel.setId(id);
+            return basketModel;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading basket id:" + id, e);
+        }
     }
 
     @Override
