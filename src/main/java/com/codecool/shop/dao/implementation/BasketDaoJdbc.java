@@ -1,13 +1,11 @@
 package com.codecool.shop.dao.implementation;
 import com.codecool.shop.dao.BasketDao;
-import com.codecool.shop.model.BasketModel;
-import com.codecool.shop.model.ProductCategoryModel;
-import com.codecool.shop.model.ProductModel;
-import com.codecool.shop.model.SupplierModel;
+import com.codecool.shop.model.*;
 import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,7 +20,7 @@ public class BasketDaoJdbc implements BasketDao {
     @Override
     public void add(BasketModel basketModel) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO product (userId, payment) VALUES (?, ?)";
+            String sql = "INSERT INTO basket (userId, payment) VALUES (?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, basketModel.getUserId());
             statement.setBoolean(2, false);
@@ -38,15 +36,22 @@ public class BasketDaoJdbc implements BasketDao {
     @Override
     public BasketModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id, userId, payment from basket WHERE id = ?";
+            String sql = "select basket.id, basket.userId, basket.payment, productForBasket.productid, productforbasket.quantity from basket" +
+                    "JOIN productForBasket on basket.id = productForBasket.basketId where basket.id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
-            if (!rs.next()) {
-                return null;
+
+            BasketModel basketModel = null;
+
+            while (rs.next()) {
+                if (basketModel == null) {
+                    basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
+                    basketModel.setId(id);
+                }
+                BasketProductModel basketProductModel = new BasketProductModel(rs.getInt(4), rs.getInt(5));
+                basketModel.addProduct(basketProductModel);
             }
-            BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
-            basketModel.setId(id);
             return basketModel;
         } catch (SQLException e) {
             throw new RuntimeException("Error while reading basket id:" + id, e);
@@ -67,12 +72,37 @@ public class BasketDaoJdbc implements BasketDao {
 
     @Override
     public List<BasketModel> getAll() {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, userId, payment from basket";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            List<BasketModel> baskets = new ArrayList<>();
+            while (rs.next()) {
+                BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
+                basketModel.setId(rs.getInt(1));
+            }
+            return baskets;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading baskets", e);
+        }
     }
 
     @Override
     public List<BasketModel> getAllForUser(int userId) {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, userId, payment from basket WHERE userId = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+            List<BasketModel> baskets = new ArrayList<>();
+            while (rs.next()) {
+                BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
+                basketModel.setId(rs.getInt(1));
+            }
+            return baskets;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading baskets for user with id: " + userId, e);
+        }
     }
 
     @Override
