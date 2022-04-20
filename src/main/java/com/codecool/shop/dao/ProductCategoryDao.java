@@ -10,5 +10,6 @@ public interface ProductCategoryDao {
     ProductCategoryModel find(int id);
     void remove(int id);
     List<ProductCategoryModel> getAll();
+    List<ProductCategoryModel> getAllForOneCategory();
 
 }
