@@ -3,16 +3,16 @@ package com.codecool.shop.model;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class Product extends BaseModel {
+public class ProductModel extends BaseModel {
 
     private BigDecimal defaultPrice;
     private Currency defaultCurrency;
-    private ProductCategory productCategory;
-    private Supplier supplier;
+    private ProductCategoryModel productCategory;
+    private SupplierModel supplier;
     private String image;
 
 
-    public Product(String name, BigDecimal defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier, String image) {
+    public ProductModel(String name, BigDecimal defaultPrice, String currencyString, String description, ProductCategoryModel productCategory, SupplierModel supplier, String image) {
         super(name, description);
         this.image = image;
         this.setPrice(defaultPrice, currencyString);
@@ -49,22 +49,20 @@ public class Product extends BaseModel {
         this.defaultCurrency = Currency.getInstance(currency);
     }
 
-    public ProductCategory getProductCategory() {
+    public ProductCategoryModel getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(ProductCategory productCategory) {
+    public void setProductCategory(ProductCategoryModel productCategory) {
         this.productCategory = productCategory;
-        this.productCategory.addProduct(this);
     }
 
-    public Supplier getSupplier() {
+    public SupplierModel getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(Supplier supplier) {
+    public void setSupplier(SupplierModel supplier) {
         this.supplier = supplier;
-        this.supplier.addProduct(this);
     }
 
     @Override

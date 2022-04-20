@@ -1,7 +1,8 @@
 package com.codecool.shop.dao.implementation;
 
-import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.Supplier;
+
+import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.model.ProductCategoryModel;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -9,23 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SupplierDaoMem implements SupplierDao {
+public class ProductCategoryDaoJdbc implements ProductCategoryDao {
 
-    private List<Supplier> data = new ArrayList<>();
+    private List<ProductCategoryModel> data = new ArrayList<>();
     private final DataSource dataSource;
 
-    public SupplierDaoMem(DataSource dataSource) {
+    public ProductCategoryDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public void add(Supplier supplier) {
-        supplier.setId(data.size() + 1);
-        data.add(supplier);
+    public void add(ProductCategoryModel category) {
+        category.setId(data.size() + 1);
+        data.add(category);
     }
 
     @Override
-    public Supplier find(int id) {
+    public ProductCategoryModel find(int id) {
         return data.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
 
@@ -35,7 +36,7 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     @Override
-    public List<Supplier> getAll() {
+    public List<ProductCategoryModel> getAll() {
         return data;
     }
 }
