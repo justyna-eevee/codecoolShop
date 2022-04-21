@@ -63,4 +63,9 @@ public class BasketService {
         basketDao.removeProductFromBasket(productId, basketId);
         return getBasket(basketId);
     }
+
+    public Basket increaseProductInBasket(int productId, int basketId) {
+        basketDao.increaseAmount(productId, basketId);
+        return getBasket(basketId);
+    }
 }
