@@ -4,8 +4,7 @@ package com.codecool.shop.controller;
 import com.codecool.shop.dto.ProductCategory;
 import com.codecool.shop.model.ProductCategoryModel;
 import com.codecool.shop.service.ProductCategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +16,23 @@ public class ProductCategoryController {
         this.service = service;
     }
 
-    @GetMapping("/categories")
+    @PostMapping("/category")
+    ProductCategory addCategory(@RequestBody ProductCategory productCategory){
+        return service.addCategory(productCategory);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    ProductCategory getCategory(@PathVariable int categoryId){
+        return service.getCategory(categoryId);
+    }
+
+    @GetMapping("/category")
     List<ProductCategory> allCategories(){
         return service.getAllCategories();
+    }
+
+    @DeleteMapping("/category/{categoryId}")
+    String deleteCategory(@PathVariable int categoryId){
+        return service.deleteCategory(categoryId);
     }
 }

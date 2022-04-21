@@ -40,7 +40,7 @@ public class BasketController {
         return service.addProductToBasket(productId, basketId);
     }
 
-    @DeleteMapping("/add/product/{productId}/basket/{basketId}")
+    @DeleteMapping("/delete/product/{productId}/basket/{basketId}")
     Basket deleteProductFromBasket(@PathVariable int productId, @PathVariable int basketId) {
         return service.deleteProductFromBasket(productId, basketId);
     }
