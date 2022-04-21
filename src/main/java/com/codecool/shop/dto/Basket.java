@@ -1,7 +1,4 @@
 package com.codecool.shop.dto;
-
-import com.codecool.shop.model.BasketProductModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
