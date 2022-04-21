@@ -7,17 +7,20 @@ public class Basket {
     protected int id;
     private int userId;
     private boolean payment;
-    List<Product> products = new ArrayList<>();
+    List<BasketProduct> products = new ArrayList<>();
 
     public Basket() {}
 
-    public Basket(int id, int userId, boolean payment) {
-        this.id = id;
+    public Basket(int userId, boolean payment) {
         this.userId = userId;
         this.payment = payment;
     }
 
-    public void addProductToBasket(Product product){
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void addProductToBasket(BasketProduct product){
         products.add(product);
     }
 
