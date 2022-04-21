@@ -10,6 +10,8 @@ public class Product {
     private int categoryId;
     private String imagePath;
 
+    public Product() {}
+
     public Product(int id, String name, String description, int price, String currency, int supplierId, int categoryId, String imagePath) {
         this.id = id;
         this.name = name;
