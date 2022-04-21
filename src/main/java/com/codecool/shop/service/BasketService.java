@@ -3,8 +3,10 @@ package com.codecool.shop.service;
 import com.codecool.shop.dao.BasketDao;
 import com.codecool.shop.dto.Basket;
 
+import com.codecool.shop.dto.BasketProduct;
 import com.codecool.shop.dto.ShopUser;
 import com.codecool.shop.model.BasketModel;
+import com.codecool.shop.model.BasketProductModel;
 import com.codecool.shop.model.ShopUserModel;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +36,16 @@ public class BasketService {
             basketsToReturn.add(new Basket(model.getId(), model.getUserId(), model.isPayment()));
         }
         return basketsToReturn;
+    }
+
+
+    public Basket getBasket(int basketId) {
+        BasketModel model = basketDao.find(basketId);
+        Basket basket = new Basket(model.getId(), model.getUserId(), model.isPayment());
+        for (BasketProductModel basketProductModel: model.getProducts()){
+            BasketProduct basketProduct = new BasketProduct(basketProductModel.getProductId(), basketProductModel.getQuantity());
+            basket.addProductToBasket(basketProduct);
+        }
+        return basket;
     }
 }

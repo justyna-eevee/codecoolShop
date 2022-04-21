@@ -41,4 +41,8 @@ public class Basket {
     public boolean isPayment() {
         return payment;
     }
+
+    public List<BasketProduct> getProducts() {
+        return products;
+    }
 }

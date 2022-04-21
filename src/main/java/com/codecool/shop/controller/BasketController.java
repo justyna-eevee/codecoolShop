@@ -24,4 +24,9 @@ public class BasketController {
     List<Basket> allBasketsForUser(@PathVariable int userId) {
         return service.getAllBasketsForUser(userId);
     }
+
+    @GetMapping("/basket/{basketId}")
+    Basket getBasket(@PathVariable int basketId) {
+        return service.getBasket(basketId);
+    }
 }
