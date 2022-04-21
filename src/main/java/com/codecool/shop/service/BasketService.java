@@ -53,4 +53,9 @@ public class BasketService {
         basketDao.setPayment(basketId);
         return getBasket(basketId);
     }
+
+    public Basket addProductToBasket(int productId, int basketId) {
+        basketDao.addProductToBasket(productId, basketId);
+        return getBasket(basketId);
+    }
 }

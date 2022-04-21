@@ -34,4 +34,9 @@ public class BasketController {
     Basket setBasketPayment(@PathVariable int basketId) {
         return service.setBasketPayment(basketId);
     }
+
+    @PostMapping("/add/product/{productId}/basket/{basketId}")
+    Basket addProductToBasket(@PathVariable int productId, @PathVariable int basketId) {
+        return service.addProductToBasket(productId, basketId);
+    }
 }
