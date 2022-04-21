@@ -58,4 +58,9 @@ public class BasketService {
         basketDao.addProductToBasket(productId, basketId);
         return getBasket(basketId);
     }
+
+    public Basket deleteProductFromBasket(int productId, int basketId) {
+        basketDao.removeProductFromBasket(productId, basketId);
+        return getBasket(basketId);
+    }
 }
