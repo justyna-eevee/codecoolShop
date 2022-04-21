@@ -111,4 +111,9 @@ public class ProductService {
         }
         return products;
     }
+
+    public String deleteProduct(int productId) {
+        productDao.remove(productId);
+        return "DELETED";
+    }
 }

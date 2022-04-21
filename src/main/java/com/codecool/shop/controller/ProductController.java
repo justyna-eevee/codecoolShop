@@ -35,8 +35,14 @@ public class ProductController {
         return  productService.getProductById(productId);
     }
 
+    @DeleteMapping("/product/{productId}")
+    String deleteProduct(@PathVariable int productId){
+        return  productService.deleteProduct(productId);
+    }
+
     @GetMapping("/products")
     List<Product> allProducts(){
         return  productService.allProducts();
     }
+
 }
