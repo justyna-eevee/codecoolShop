@@ -5,10 +5,7 @@ import com.codecool.shop.model.SupplierModel;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +22,9 @@ public class SupplierDaoJdbc implements SupplierDao {
     @Override
     public void add(SupplierModel supplier) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO supplier (name)" +
+            String sql = "INSERT INTO supplier (name) " +
                          "VALUES (?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, supplier.getName());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -41,10 +38,10 @@ public class SupplierDaoJdbc implements SupplierDao {
     @Override
     public SupplierModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT name" +
-                         "FROM supplier" +
+            String sql = "SELECT name " +
+                         "FROM supplier " +
                          "WHERE id = ?";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
@@ -61,9 +58,9 @@ public class SupplierDaoJdbc implements SupplierDao {
     @Override
     public void remove(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "DELETE FROM supplier" +
+            String sql = "DELETE FROM supplier " +
                          "WHERE id = ?";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -80,9 +77,9 @@ public class SupplierDaoJdbc implements SupplierDao {
     @Override
     public List<SupplierModel> getAll() {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id, name" +
+            String sql = "SELECT id, name " +
                          "FROM supplier";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.executeQuery();
 
             List<SupplierModel> supplierModels = new ArrayList<>();
