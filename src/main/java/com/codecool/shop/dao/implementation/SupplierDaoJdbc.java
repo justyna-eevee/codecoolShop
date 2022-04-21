@@ -79,7 +79,7 @@ public class SupplierDaoJdbc implements SupplierDao {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT id, name " +
                          "FROM supplier";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.executeQuery();
 
             List<SupplierModel> supplierModels = new ArrayList<>();
