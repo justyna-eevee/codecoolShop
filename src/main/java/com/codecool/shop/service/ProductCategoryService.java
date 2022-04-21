@@ -35,4 +35,9 @@ public class ProductCategoryService {
         ProductCategoryModel model = productCategoryDao.find(categoryId);
         return new ProductCategory(model.getId(), model.getName());
     }
+
+    public String deleteCategory(int categoryId) {
+        productCategoryDao.remove(categoryId);
+        return "DELETED";
+    }
 }

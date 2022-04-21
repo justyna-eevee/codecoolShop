@@ -26,8 +26,13 @@ public class ProductCategoryController {
         return service.getCategory(categoryId);
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/category")
     List<ProductCategory> allCategories(){
         return service.getAllCategories();
+    }
+
+    @DeleteMapping("/category/{categoryId}")
+    String deleteCategory(@PathVariable int categoryId){
+        return service.deleteCategory(categoryId);
     }
 }
