@@ -9,6 +9,8 @@ public class ProductCategory {
         this.name = name;
     }
 
+    public ProductCategory() {}
+
     public void setId(int id) { this.id = id; }
 
     public int getId() { return id; }
