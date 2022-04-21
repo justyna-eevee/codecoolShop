@@ -2,9 +2,12 @@ package com.codecool.shop.service;
 
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dto.Product;
 import com.codecool.shop.dto.ProductCategory;
 import com.codecool.shop.model.ProductModel;
 import com.codecool.shop.model.ProductCategoryModel;
+import com.codecool.shop.model.SupplierModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,28 +18,67 @@ import java.util.List;
 public class ProductService {
     private ProductDao productDao;
     private ProductCategoryDao productCategoryDao;
+    private SupplierDao productSupplierDao;
 
-    public ProductService(ProductDao productDao, ProductCategoryDao productCategoryDao) {
+    public ProductService(ProductDao productDao, ProductCategoryDao productCategoryDao, SupplierDao productSupplierDao) {
         this.productDao = productDao;
         this.productCategoryDao = productCategoryDao;
+        this.productSupplierDao = productSupplierDao;
     }
 
-    public ProductCategoryModel getProductCategory(int categoryId){
-        return productCategoryDao.find(categoryId);
+    public Product getProductById(int productId) {
+        ProductModel model = productDao.find(productId);
+        return new Product(model.getId(),
+                model.getName(),
+                model.getDescription(),
+                model.getDefaultPrice(),
+                model.getDefaultCurrency(),
+                model.getSupplier().getId(),
+                model.getProductCategory().getId(),
+                model.getImage());
     }
 
-    public List<ProductModel> getProductsForCategory(int categoryId){
-        var category = productCategoryDao.find(categoryId);
-        return productDao.getBy(category);
-    }
+    public List<Product> getProductsFromCategory(int categoryId) {
+        ProductCategoryModel category = productCategoryDao.find(categoryId);
+        List<Product> productsFromCategory = new ArrayList<>();
+        List<ProductModel> productModelsFromCategory = productDao.getBy(category);
 
-    public List<ProductCategory> getAllCategories() {
-        List<ProductCategoryModel> allCategoryModels = productCategoryDao.getAll();
-        List<ProductCategory> allCategories = new ArrayList<>();
-        for (ProductCategoryModel model: allCategoryModels) {
-            allCategories.add(new ProductCategory(model.getId(), model.getName()));
+        for (ProductModel productModel : productModelsFromCategory) {
+            int supplierId = productModel.getSupplier().getId();
+            Product product = new Product(productModel.getId(),
+                                            productModel.getName(),
+                                            productModel.getDescription(),
+                                            productModel.getDefaultPrice(),
+                                            productModel.getDefaultCurrency(),
+                                            supplierId,
+                                            categoryId,
+                                            productModel.getImage()
+                            );
+            productsFromCategory.add(product);
         }
-        return allCategories;
+
+        return productsFromCategory;
     }
 
+    public List<Product> getProductsFromSupplier(int supplierId){
+        SupplierModel supplier = productSupplierDao.find(supplierId);
+        List<Product> productsFromSupplier = new ArrayList<>();
+        List<ProductModel> productModelsFromSupplier = productDao.getBy(supplier);
+
+        for (ProductModel productModel : productModelsFromSupplier) {
+            int categoryId = productModel.getProductCategory().getId();
+            Product product = new Product(productModel.getId(),
+                    productModel.getName(),
+                    productModel.getDescription(),
+                    productModel.getDefaultPrice(),
+                    productModel.getDefaultCurrency(),
+                    supplierId,
+                    categoryId,
+                    productModel.getImage()
+            );
+            productsFromSupplier.add(product);
+        }
+
+        return productsFromSupplier;
+    }
 }
