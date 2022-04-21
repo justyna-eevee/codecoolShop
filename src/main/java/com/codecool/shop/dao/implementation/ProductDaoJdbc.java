@@ -34,7 +34,7 @@ public class ProductDaoJdbc implements ProductDao {
             statement.setString(1, product.getName());
             statement.setString(2, product.getDescription());
             statement.setFloat(3, Float.parseFloat(product.getPrice()));
-            statement.setString(4, product.getDefaultCurrency().getDisplayName());
+            statement.setString(4, product.getDefaultCurrency().getCurrencyCode());
             statement.setInt(5, product.getSupplier().getId());
             statement.setInt(6, product.getProductCategory().getId());
             statement.setString(7, product.getImage());
