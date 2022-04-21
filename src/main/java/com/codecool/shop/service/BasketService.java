@@ -73,4 +73,9 @@ public class BasketService {
         basketDao.decreaseAmount(productId, basketId);
         return getBasket(basketId);
     }
+
+    public Basket changeProductAmountInBasket(int productId, int basketId, int quantity) {
+        basketDao.setAmount(productId, basketId, quantity);
+        return getBasket(basketId);
+    }
 }
