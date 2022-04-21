@@ -2,10 +2,12 @@ package com.codecool.shop.service;
 
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
+import com.codecool.shop.dto.ProductCategory;
 import com.codecool.shop.model.ProductModel;
 import com.codecool.shop.model.ProductCategoryModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // w tym pliku znajdują się walidacje, łączenie z dao
@@ -28,5 +30,13 @@ public class ProductService {
         return productDao.getBy(category);
     }
 
+    public List<ProductCategory> getAllCategories() {
+        List<ProductCategoryModel> allCategoryModels = productCategoryDao.getAll();
+        List<ProductCategory> allCategories = new ArrayList<>();
+        for (ProductCategoryModel model: allCategoryModels) {
+            allCategories.add(new ProductCategory(model.getId(), model.getName()));
+        }
+        return allCategories;
+    }
 
 }
