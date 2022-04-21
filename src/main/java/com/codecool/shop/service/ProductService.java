@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dto.Product;
 import com.codecool.shop.dto.ProductCategory;
+import com.codecool.shop.model.BasketModel;
 import com.codecool.shop.model.ProductModel;
 import com.codecool.shop.model.ProductCategoryModel;
 import com.codecool.shop.model.SupplierModel;
@@ -80,5 +81,16 @@ public class ProductService {
         }
 
         return productsFromSupplier;
+    }
+
+    public Product addProduct(Product product) {
+        ProductCategoryModel productCategoryModel = productCategoryDao.find(product.getCategoryId());
+        SupplierModel supplierModel = productSupplierDao.find(product.getSupplierId());
+        ProductModel model = new ProductModel(product.getName(), product.getPrice(),
+                product.getCurrency().getCurrencyCode(), product.getDescription(), productCategoryModel,
+                supplierModel, product.getImagePath());
+        productDao.add(model);
+        product.setId(model.getId());
+        return product;
     }
 }
