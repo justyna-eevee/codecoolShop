@@ -16,6 +16,12 @@ public class Basket {
         this.payment = payment;
     }
 
+    public Basket(int id, int userId, boolean payment) {
+        this.id = id;
+        this.userId = userId;
+        this.payment = payment;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

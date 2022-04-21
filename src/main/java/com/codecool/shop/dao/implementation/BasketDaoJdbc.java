@@ -97,6 +97,7 @@ public class BasketDaoJdbc implements BasketDao {
             while (rs.next()) {
                 BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
                 basketModel.setId(rs.getInt(1));
+                baskets.add(basketModel);
             }
             return baskets;
         } catch (SQLException e) {
