@@ -112,6 +112,7 @@ public class BasketDaoJdbc implements BasketDao {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "UPDATE basket SET payment = true WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("You cannot update basket with id: " + id, e);

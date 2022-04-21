@@ -48,4 +48,9 @@ public class BasketService {
         }
         return basket;
     }
+
+    public Basket setBasketPayment(int basketId) {
+        basketDao.setPayment(basketId);
+        return getBasket(basketId);
+    }
 }

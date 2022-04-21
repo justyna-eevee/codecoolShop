@@ -29,4 +29,9 @@ public class BasketController {
     Basket getBasket(@PathVariable int basketId) {
         return service.getBasket(basketId);
     }
+
+    @PutMapping("/basket/{basketId}")
+    Basket setBasketPayment(@PathVariable int basketId) {
+        return service.setBasketPayment(basketId);
+    }
 }
