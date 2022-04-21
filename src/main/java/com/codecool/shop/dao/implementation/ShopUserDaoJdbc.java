@@ -37,8 +37,8 @@ public class ShopUserDaoJdbc implements ShopUserDao {
     @Override
     public ShopUserModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT name" +
-                         "FROM shopuser" +
+            String sql = "SELECT name " +
+                         "FROM shopuser " +
                          "WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
@@ -57,7 +57,7 @@ public class ShopUserDaoJdbc implements ShopUserDao {
     @Override
     public void remove(int id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "DELETE FROM shopuser" +
+            String sql = "DELETE FROM shopuser " +
                          "WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
@@ -76,7 +76,7 @@ public class ShopUserDaoJdbc implements ShopUserDao {
     @Override
     public List<ShopUserModel> getAll() {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id, name" +
+            String sql = "SELECT id, name " +
                          "FROM shopuser";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
