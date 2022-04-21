@@ -49,4 +49,9 @@ public class BasketController {
     Basket increaseProductInBasket(@PathVariable int productId, @PathVariable int basketId) {
         return service.increaseProductInBasket(productId, basketId);
     }
+
+    @PutMapping("/basket/{basketId}/product/{productId}/decrease")
+    Basket decreaseProductInBasket(@PathVariable int productId, @PathVariable int basketId) {
+        return service.decreaseProductInBasket(productId, basketId);
+    }
 }

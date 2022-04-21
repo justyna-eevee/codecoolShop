@@ -68,4 +68,9 @@ public class BasketService {
         basketDao.increaseAmount(productId, basketId);
         return getBasket(basketId);
     }
+
+    public Basket decreaseProductInBasket(int productId, int basketId) {
+        basketDao.decreaseAmount(productId, basketId);
+        return getBasket(basketId);
+    }
 }
