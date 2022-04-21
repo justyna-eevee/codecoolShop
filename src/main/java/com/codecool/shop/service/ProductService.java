@@ -10,7 +10,7 @@ import java.util.List;
 
 // w tym pliku znajdują się walidacje, łączenie z dao
 @Service // mówi, że spring może wziąć klasę i używać jej w kontrolerach, innych serwisach
-public class ProductService{
+public class ProductService {
     private ProductDao productDao;
     private ProductCategoryDao productCategoryDao;
 
