@@ -1,8 +1,8 @@
 package com.codecool.shop.dto;
 
 public class ProductCategory {
-    protected int id;
-    protected String name;
+    private int id;
+    private String name;
 
     public ProductCategory(int id, String name) {
         this.id = id;
