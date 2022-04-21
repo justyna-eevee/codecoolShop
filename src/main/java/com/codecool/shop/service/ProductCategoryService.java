@@ -30,4 +30,9 @@ public class ProductCategoryService {
         productCategory.setId(model.getId());
         return productCategory;
     }
+
+    public ProductCategory getCategory(int categoryId) {
+        ProductCategoryModel model = productCategoryDao.find(categoryId);
+        return new ProductCategory(model.getId(), model.getName());
+    }
 }
