@@ -1,6 +1,4 @@
 package com.codecool.shop.controller;
-
-import com.codecool.shop.dto.Basket;
 import com.codecool.shop.dto.Product;
 import com.codecool.shop.service.ProductService;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +33,10 @@ public class ProductController {
     @GetMapping("/product/{productId}")
     Product productById(@PathVariable int productId){
         return  productService.getProductById(productId);
+    }
+
+    @GetMapping("/products")
+    List<Product> allProducts(){
+        return  productService.allProducts();
     }
 }

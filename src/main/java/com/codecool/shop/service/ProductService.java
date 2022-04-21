@@ -93,4 +93,22 @@ public class ProductService {
         product.setId(model.getId());
         return product;
     }
+
+    public List<Product> allProducts() {
+        List<Product> products = new ArrayList<>();
+        List<ProductModel> productsFromDatabase = productDao.getAll();
+        for (ProductModel productModel : productsFromDatabase) {
+            Product product = new Product(productModel.getId(),
+                    productModel.getName(),
+                    productModel.getDescription(),
+                    productModel.getDefaultPrice(),
+                    productModel.getDefaultCurrency(),
+                    productModel.getSupplier().getId(),
+                    productModel.getProductCategory().getId(),
+                    productModel.getImage()
+            );
+            products.add(product);
+        }
+        return products;
+    }
 }
