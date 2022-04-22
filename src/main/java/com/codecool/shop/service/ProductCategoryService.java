@@ -1,9 +1,6 @@
 package com.codecool.shop.service;
-
 import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ShopUserDao;
 import com.codecool.shop.dto.ProductCategory;
-import com.codecool.shop.dto.ShopUser;
 import com.codecool.shop.model.ProductCategoryModel;
 import com.codecool.shop.model.ShopUserModel;
 import jdk.jfr.Category;
@@ -27,6 +24,23 @@ public class ProductCategoryService {
             allCategories.add(new ProductCategory(model.getId(), model.getName()));
         }
         return allCategories;
+    }
+
+    public ProductCategory addCategory(ProductCategory productCategory) {
+        ProductCategoryModel model = new ProductCategoryModel(productCategory.getName());
+        productCategoryDao.add(model);
+        productCategory.setId(model.getId());
+        return productCategory;
+    }
+
+    public ProductCategory getCategory(int categoryId) {
+        ProductCategoryModel model = productCategoryDao.find(categoryId);
+        return new ProductCategory(model.getId(), model.getName());
+    }
+
+    public String deleteCategory(int categoryId) {
+        productCategoryDao.remove(categoryId);
+        return "DELETED";
     }
 
     public ProductCategory getCategoryById(int categoryId){

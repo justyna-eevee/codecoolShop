@@ -36,7 +36,7 @@ public class BasketDaoJdbc implements BasketDao {
     public BasketModel find(int id) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "select basket.id, basket.userId, basket.payment, productForBasket.productid, productforbasket.quantity from basket" +
-                    " JOIN productForBasket on basket.id = productForBasket.basketId where basket.id = ?";
+                    " FULL JOIN productForBasket on basket.id = productForBasket.basketId where basket.id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
@@ -48,8 +48,10 @@ public class BasketDaoJdbc implements BasketDao {
                     basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
                     basketModel.setId(id);
                 }
-                BasketProductModel basketProductModel = new BasketProductModel(rs.getInt(4), rs.getInt(5));
-                basketModel.addProduct(basketProductModel);
+                if (rs.getInt(4) > 0 && rs.getInt(5) > 0) {
+                    BasketProductModel basketProductModel = new BasketProductModel(rs.getInt(4), rs.getInt(5));
+                    basketModel.addProduct(basketProductModel);
+                }
             }
             return basketModel;
         } catch (SQLException e) {
@@ -97,6 +99,7 @@ public class BasketDaoJdbc implements BasketDao {
             while (rs.next()) {
                 BasketModel basketModel = new BasketModel(rs.getInt(2), rs.getBoolean(3));
                 basketModel.setId(rs.getInt(1));
+                baskets.add(basketModel);
             }
             return baskets;
         } catch (SQLException e) {
@@ -109,6 +112,7 @@ public class BasketDaoJdbc implements BasketDao {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "UPDATE basket SET payment = true WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("You cannot update basket with id: " + id, e);
