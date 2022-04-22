@@ -83,6 +83,27 @@ public class ProductService {
         return productsFromSupplier;
     }
 
+    public List<Product> getAllProducts(){
+        List<Product> products = new ArrayList<>();
+        List<ProductModel> productModels = productDao.getAll();
+
+        for (ProductModel productModel : productModels) {
+            int categoryId = productModel.getProductCategory().getId();
+            int supplierId = productModel.getSupplier().getId();
+            Product product = new Product(productModel.getId(),
+                    productModel.getName(),
+                    productModel.getDescription(),
+                    productModel.getDefaultPrice(),
+                    productModel.getDefaultCurrency(),
+                    supplierId,
+                    categoryId,
+                    productModel.getImage()
+            );
+            products.add(product);
+        }
+        return products;
+    }
+
     public Product addProduct(Product product) {
         ProductCategoryModel productCategoryModel = productCategoryDao.find(product.getCategoryId());
         SupplierModel supplierModel = productSupplierDao.find(product.getSupplierId());
@@ -92,24 +113,6 @@ public class ProductService {
         productDao.add(model);
         product.setId(model.getId());
         return product;
-    }
-
-    public List<Product> allProducts() {
-        List<Product> products = new ArrayList<>();
-        List<ProductModel> productsFromDatabase = productDao.getAll();
-        for (ProductModel productModel : productsFromDatabase) {
-            Product product = new Product(productModel.getId(),
-                    productModel.getName(),
-                    productModel.getDescription(),
-                    productModel.getDefaultPrice(),
-                    productModel.getDefaultCurrency(),
-                    productModel.getSupplier().getId(),
-                    productModel.getProductCategory().getId(),
-                    productModel.getImage()
-            );
-            products.add(product);
-        }
-        return products;
     }
 
     public String deleteProduct(int productId) {

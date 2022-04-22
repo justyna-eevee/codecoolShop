@@ -1,15 +1,20 @@
 package com.codecool.shop.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class IndexController {
 
     @GetMapping("/")
-    String index(Model model){
-        model.addAttribute("category", "TEST"); // przekazanie parametru do html
-        return "product/index";
+    String index(){
+        return "mainPage";
     }
+
+    @GetMapping("/product")
+    String productSinglePage(){
+        return "productPage";
+    }
+
 }

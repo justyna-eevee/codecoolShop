@@ -2,6 +2,8 @@ package com.codecool.shop.service;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dto.ProductCategory;
 import com.codecool.shop.model.ProductCategoryModel;
+import com.codecool.shop.model.ShopUserModel;
+import jdk.jfr.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,4 +42,10 @@ public class ProductCategoryService {
         productCategoryDao.remove(categoryId);
         return "DELETED";
     }
+
+    public ProductCategory getCategoryById(int categoryId){
+        ProductCategoryModel model = productCategoryDao.find(categoryId);
+        return new ProductCategory(model.getId(), model.getName());
+    }
+
 }
