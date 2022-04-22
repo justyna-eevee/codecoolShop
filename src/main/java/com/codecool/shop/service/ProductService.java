@@ -81,4 +81,25 @@ public class ProductService {
 
         return productsFromSupplier;
     }
+
+    public List<Product> getAllProducts(){
+        List<Product> products = new ArrayList<>();
+        List<ProductModel> productModels = productDao.getAll();
+
+        for (ProductModel productModel : productModels) {
+            int categoryId = productModel.getProductCategory().getId();
+            int supplierId = productModel.getSupplier().getId();
+            Product product = new Product(productModel.getId(),
+                    productModel.getName(),
+                    productModel.getDescription(),
+                    productModel.getDefaultPrice(),
+                    productModel.getDefaultCurrency(),
+                    supplierId,
+                    categoryId,
+                    productModel.getImage()
+            );
+            products.add(product);
+        }
+        return products;
+    }
 }
