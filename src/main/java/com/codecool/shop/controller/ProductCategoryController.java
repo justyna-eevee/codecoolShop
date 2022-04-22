@@ -39,8 +39,4 @@ public class ProductCategoryController {
         return service.deleteCategory(categoryId);
     }
 
-    @GetMapping("/category/{categoryId}")
-    ProductCategory category(@PathVariable int categoryId){
-        return service.getCategoryById(categoryId);
-    }
 }
