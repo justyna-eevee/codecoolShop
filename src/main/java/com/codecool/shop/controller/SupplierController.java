@@ -20,7 +20,7 @@ public class SupplierController {
         return service.addSupplier(supplier);
     }
 
-    @PostMapping("/suppliers")
+    @GetMapping("/supplier")
     List<Supplier> allSuppliers() {
         return service.getAllSuppliers();
     }
